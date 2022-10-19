@@ -1,0 +1,18 @@
+From: Diane Trout <diane@ghic.org>
+Date: Mon, 24 Apr 2017 16:38:34 -0700
+Subject: Remove github username and project id
+
+Including it triggers a privacy breach in the locally generated
+html files.
+
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -123,8 +123,6 @@
+     'logo_name': True,
+     'logo_text_align': 'center',
+     'show_powered_by': False,
+-    'github_user': 'grantjenks',
+-    'github_repo': 'sortedcollections',
+ }
+ 
+ # Add any paths that contain custom themes here, relative to this directory.

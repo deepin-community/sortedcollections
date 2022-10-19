@@ -1,0 +1,5 @@
+I chose to use github as the source for this python package because
+upstream removed the documentation directories from the pypi source
+package.
+
+ -- Diane Trout <diane@ghic.org>, Mon, 24 Apr 2017 15:24:09 -0700

@@ -1,0 +1,25 @@
+From 688d19949ccc3dd170a91680b8030c39a651240b Mon Sep 17 00:00:00 2001
+From: Diane Trout <diane@ghic.org>
+Date: Mon, 24 Apr 2017 16:38:34 -0700
+Subject: Remove Google analytics account ID
+
+Including it triggers a privacy breach in the locally generated
+html files.
+
+Also disabled the travis button, to cut down on other unnecessary web
+traffic.
+---
+ docs/conf.py | 2 --
+ 1 file changed, 2 deletions(-)
+
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -122,8 +122,6 @@
+     'logo': 'gj-logo.png',
+     'logo_name': True,
+     'logo_text_align': 'center',
+-    'travis_button': True,
+-    'analytics_id': 'UA-19364636-2',
+     'show_powered_by': False,
+     'github_user': 'grantjenks',
+     'github_repo': 'sortedcollections',

@@ -1,0 +1,9 @@
+Document: python-sortedcollections-doc
+Title: Sorted Collections Documentation
+Author: Grant Jenks
+Abstract: Distributed computation documentation
+Section: Programming/Python
+
+Format: HTML
+Index: /usr/share/doc/python-sortedcollections-doc/html/index.html
+Files: /usr/share/doc/python-sortedcollections-doc/html/*.html

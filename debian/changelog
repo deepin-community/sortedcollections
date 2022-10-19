@@ -1,0 +1,36 @@
+sortedcollections (1.0.1-1) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Ondřej Nový ]
+  * d/control: Remove ancient X-Python-Version field
+  * d/control: Remove ancient X-Python3-Version field
+
+  [ Dmitry Shachnev ]
+  * New upstream release.
+    - Fixes compatibility with sortedcontainers 2.0, where the iterkeys,
+      iteritems, itervalues methods of SortedDict have been removed.
+
+ -- Dmitry Shachnev <mitya57@debian.org>  Tue, 19 Jun 2018 00:09:16 +0300
+
+sortedcollections (0.6.1-1) unstable; urgency=medium
+
+  [ Ondřej Nový ]
+  * d/control: Set Vcs-* to salsa.debian.org
+  * d/tests: Use AUTOPKGTEST_TMP instead of ADTTMP
+
+  [ Diane Trout ]
+  * New upstream release (Closes: #896808)
+  * Update Standards-Version to 4.1.4 no changes needed
+  * Fix typos
+  * Update to debhelper 11
+  * Refresh patch
+  * Add 0002-remove-github-buttons.patch to close privacy leak
+
+ -- Diane Trout <diane@ghic.org>  Fri, 27 Apr 2018 21:35:43 -0700
+
+sortedcollections (0.5.3-1) unstable; urgency=low
+
+  * Initial packaging. (Closes: #861140)
+
+ -- Diane Trout <diane@ghic.org>  Mon, 24 Apr 2017 14:56:24 -0700
