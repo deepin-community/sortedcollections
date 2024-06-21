@@ -8,4 +8,8 @@ override_dh_auto_build: export http_proxy=127.0.0.1:9
 override_dh_auto_build: export https_proxy=127.0.0.1:9
 override_dh_auto_build:
 	dh_auto_build
-	PYTHONPATH=. sphinx-build -N -bhtml docs build/html # HTML generator
+	PYTHONPATH=. python3 -m sphinx -N -bhtml docs build/html # HTML generator
+
+override_dh_auto_install:
+	dh_auto_install
+	rm -rf debian/python3-sortedcollections/usr/lib/python3*/dist-packages/.coverage

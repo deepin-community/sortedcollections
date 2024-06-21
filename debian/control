@@ -1,19 +1,23 @@
 Source: sortedcollections
-Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Maintainer: Debian Python Team <team+python@tracker.debian.org>
 Uploaders: Diane Trout <diane@ghic.org>
 Section: python
 Priority: optional
-Build-Depends: debhelper (>= 11),
+Build-Depends: debhelper-compat (= 13),
                dh-python,
                python3-all,
-               python3-nose,
+               python3-doc8 <!nocheck>,
+               python3-mypy <!nocheck>,
+               python3-pytest,
+               python3-pytest-cov,
                python3-setuptools,
                python3-sortedcontainers,
                python3-sphinx
-Standards-Version: 4.1.4
-Homepage: http://www.grantjenks.com/docs/sortedcollections/
-Vcs-Git: https://salsa.debian.org/python-team/modules/sortedcollections.git
-Vcs-Browser: https://salsa.debian.org/python-team/modules/sortedcollections
+Standards-Version: 4.6.1
+Homepage: https://www.grantjenks.com/docs/sortedcollections/
+Vcs-Git: https://salsa.debian.org/python-team/packages/sortedcollections.git
+Vcs-Browser: https://salsa.debian.org/python-team/packages/sortedcollections
+Rules-Requires-Root: no
 
 Package: python3-sortedcollections
 Architecture: all
@@ -39,6 +43,7 @@ Package: python-sortedcollections-doc
 Architecture: all
 Depends: ${misc:Depends}, ${sphinxdoc:Depends}
 Section: doc
+Multi-Arch: foreign
 Description: Python documentation for Sorted Collections
  SortedCollections is an Apache2 licensed Python sorted collections library.
  .

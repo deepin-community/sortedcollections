@@ -7,12 +7,13 @@ html files.
 
 --- a/docs/conf.py
 +++ b/docs/conf.py
-@@ -123,8 +123,6 @@
-     'logo_name': True,
+@@ -89,9 +89,6 @@
      'logo_text_align': 'center',
      'show_powered_by': False,
+     'show_related': True,
 -    'github_user': 'grantjenks',
--    'github_repo': 'sortedcollections',
+-    'github_repo': 'python-sortedcollections',
+-    'github_type': 'star',
  }
  
- # Add any paths that contain custom themes here, relative to this directory.
+ # Add any paths that contain custom static files (such as style sheets) here,

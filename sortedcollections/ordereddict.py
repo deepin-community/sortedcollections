@@ -2,24 +2,20 @@
 
 """
 
-import collections as co
 from itertools import count
 from operator import eq
-import sys
 
 from sortedcontainers import SortedDict
 from sortedcontainers.sortedlist import recursive_repr
 
-if sys.hexversion < 0x03000000:
-    from itertools import imap # pylint: disable=wrong-import-order, ungrouped-imports
-    map = imap # pylint: disable=redefined-builtin, invalid-name
+from .recipes import abc
 
 NONE = object()
 
 
-class KeysView(co.KeysView, co.Sequence):
+class KeysView(abc.KeysView, abc.Sequence):
     "Read-only view of mapping keys."
-    # pylint: disable=too-few-public-methods,protected-access
+    # noqa pylint: disable=too-few-public-methods,protected-access,too-many-ancestors
     def __getitem__(self, index):
         "``keys_view[index]``"
         _nums = self._mapping._nums
@@ -29,9 +25,9 @@ class KeysView(co.KeysView, co.Sequence):
         return _nums[_nums._list[index]]
 
 
-class ItemsView(co.ItemsView, co.Sequence):
+class ItemsView(abc.ItemsView, abc.Sequence):
     "Read-only view of mapping items."
-    # pylint: disable=too-few-public-methods,protected-access
+    # noqa pylint: disable=too-few-public-methods,protected-access,too-many-ancestors
     def __getitem__(self, index):
         "``items_view[index]``"
         _mapping = self._mapping
@@ -45,9 +41,9 @@ class ItemsView(co.ItemsView, co.Sequence):
         return key, _mapping[key]
 
 
-class ValuesView(co.ValuesView, co.Sequence):
+class ValuesView(abc.ValuesView, abc.Sequence):
     "Read-only view of mapping values."
-    # pylint: disable=too-few-public-methods,protected-access
+    # noqa pylint: disable=too-few-public-methods,protected-access,too-many-ancestors
     def __getitem__(self, index):
         "``items_view[index]``"
         _mapping = self._mapping
@@ -76,6 +72,7 @@ class OrderedDict(dict):
     The dict views support the sequence abstract base class.
 
     """
+
     # pylint: disable=super-init-not-called
     def __init__(self, *args, **kwargs):
         self._keys = {}
@@ -127,7 +124,7 @@ class OrderedDict(dict):
         value = self.pop(key)
         return key, value
 
-    update = __update = co.MutableMapping.update
+    update = __update = abc.MutableMapping.update
 
     def keys(self):
         "Return set-like and sequence-like view of mapping keys."
@@ -152,10 +149,9 @@ class OrderedDict(dict):
             value = self[key]
             del self[key]
             return value
-        elif default is NONE:
+        if default is NONE:
             raise KeyError(key)
-        else:
-            return default
+        return default
 
     def setdefault(self, key, default=None):
         """Return ``mapping.get(key, default)``, also set ``mapping[key] = default`` if
@@ -170,7 +166,7 @@ class OrderedDict(dict):
     @recursive_repr()
     def __repr__(self):
         "Text representation of mapping."
-        return '%s(%r)' % (self.__class__.__name__, list(self.items()))
+        return f'{self.__class__.__name__}({list(self.items())!r})'
 
     __str__ = __repr__
 
@@ -197,7 +193,7 @@ class OrderedDict(dict):
             return dict.__eq__(self, other) and all(map(eq, self, other))
         return dict.__eq__(self, other)
 
-    __ne__ = co.MutableMapping.__ne__
+    __ne__ = abc.MutableMapping.__ne__
 
     def _check(self):
         "Check consistency of internal member variables."
