@@ -1,6 +1,9 @@
 "Test sortedcollections.recipes"
 
-from nose.tools import raises
+import pickle
+
+import pytest
+
 from sortedcollections import IndexableDict, IndexableSet, SegmentList
 
 
@@ -10,10 +13,19 @@ def test_index_dict():
     for value in range(10):
         assert iloc[value] == value
 
+
 def test_index_set():
     set_values = IndexableSet(range(10))
     for index in range(10):
         assert set_values[index] == index
+
+
+def test_index_set_pickle():
+    set_values1 = IndexableSet(range(10))
+    data = pickle.dumps(set_values1)
+    set_values2 = pickle.loads(data)
+    assert set_values1 == set_values2
+
 
 def test_segment_list():
     values = [5, 1, 3, 2, 4, 8, 6, 7, 9, 0]
@@ -35,12 +47,14 @@ def test_segment_list():
     sl.insert(6, 'e')
     assert list(sl) == [0, 1, 'c', 'd', 3, 4, 'e']
 
-@raises(NotImplementedError)
+
 def test_segment_list_bisect():
     sl = SegmentList()
-    sl.bisect(0)
+    with pytest.raises(NotImplementedError):
+        sl.bisect(0)
 
-@raises(NotImplementedError)
+
 def test_segment_list_setitem_slice():
     sl = SegmentList()
-    sl[:] = [0]
+    with pytest.raises(NotImplementedError):
+        sl[:] = [0]

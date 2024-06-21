@@ -2,9 +2,11 @@
 
 """
 
-import collections as co
+from collections import abc
+from copy import deepcopy
 from itertools import count
-from sortedcontainers import SortedKeyList, SortedDict, SortedSet
+
+from sortedcontainers import SortedDict, SortedKeyList, SortedSet
 from sortedcontainers.sortedlist import recursive_repr
 
 
@@ -21,8 +23,9 @@ class IndexableDict(SortedDict):
     The dict views support the sequence abstract base class.
 
     """
+
     def __init__(self, *args, **kwargs):
-        super(IndexableDict, self).__init__(hash, *args, **kwargs)
+        super().__init__(hash, *args, **kwargs)
 
 
 class IndexableSet(SortedSet):
@@ -37,8 +40,13 @@ class IndexableSet(SortedSet):
     `IndexableSet` implements the sequence abstract base class.
 
     """
+
+    # pylint: disable=too-many-ancestors
     def __init__(self, *args, **kwargs):
-        super(IndexableSet, self).__init__(*args, key=hash, **kwargs)
+        super().__init__(*args, key=hash, **kwargs)
+
+    def __reduce__(self):
+        return self.__class__, (set(self),)
 
 
 class ItemSortedDict(SortedDict):
@@ -57,36 +65,45 @@ class ItemSortedDict(SortedDict):
     the callable given as the first argument.
 
     """
+
     def __init__(self, *args, **kwargs):
         assert args and callable(args[0])
         args = list(args)
         func = self._func = args[0]
+
         def key_func(key):
             "Apply key function to (key, value) item pair."
             return func(key, self[key])
+
         args[0] = key_func
-        super(ItemSortedDict, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def __delitem__(self, key):
         "``del mapping[key]``"
         if key not in self:
             raise KeyError(key)
         self._list_remove(key)
-        self._dict_delitem(key)
+        dict.__delitem__(self, key)
 
     def __setitem__(self, key, value):
         "``mapping[key] = value``"
         if key in self:
             self._list_remove(key)
-            self._dict_delitem(key)
-        self._dict_setitem(key, value)
+            dict.__delitem__(self, key)
+        dict.__setitem__(self, key, value)
         self._list_add(key)
+
+    _setitem = __setitem__
 
     def copy(self):
         "Return shallow copy of the mapping."
         return self.__class__(self._func, iter(self.items()))
 
     __copy__ = copy
+
+    def __deepcopy__(self, memo):
+        items = (deepcopy(item, memo) for item in self.items())
+        return self.__class__(self._func, items)
 
 
 class ValueSortedDict(SortedDict):
@@ -114,39 +131,46 @@ class ValueSortedDict(SortedDict):
     ``sorted`` function.
 
     """
+
     def __init__(self, *args, **kwargs):
         args = list(args)
         if args and callable(args[0]):
             func = self._func = args[0]
+
             def key_func(key):
                 "Apply key function to ``mapping[value]``."
                 return func(self[key])
+
             args[0] = key_func
         else:
             self._func = None
+
             def key_func(key):
                 "Return mapping value for key."
                 return self[key]
+
             if args and args[0] is None:
                 args[0] = key_func
             else:
                 args.insert(0, key_func)
-        super(ValueSortedDict, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def __delitem__(self, key):
         "``del mapping[key]``"
         if key not in self:
             raise KeyError(key)
         self._list_remove(key)
-        self._dict_delitem(key)
+        dict.__delitem__(self, key)
 
     def __setitem__(self, key, value):
         "``mapping[key] = value``"
         if key in self:
             self._list_remove(key)
-            self._dict_delitem(key)
-        self._dict_setitem(key, value)
+            dict.__delitem__(self, key)
+        dict.__setitem__(self, key, value)
         self._list_add(key)
+
+    _setitem = __setitem__
 
     def copy(self):
         "Return shallow copy of the mapping."
@@ -161,17 +185,11 @@ class ValueSortedDict(SortedDict):
 
     @recursive_repr()
     def __repr__(self):
-        temp = '{0}({1}, {{{2}}})'
-        items = ', '.join('{0}: {1}'.format(repr(key), repr(self[key]))
-                          for key in self._list)
-        return temp.format(
-            self.__class__.__name__,
-            repr(self._func),
-            items
-        )
+        items = ', '.join(f'{key!r}: {self[key]!r}' for key in self._list)
+        return f'{self.__class__.__name__}({self._func!r}, {{{items}}})'
 
 
-class OrderedSet(co.MutableSet, co.Sequence):
+class OrderedSet(abc.MutableSet, abc.Sequence):
     """Like OrderedDict, OrderedSet maintains the insertion order of elements.
 
     For example::
@@ -186,6 +204,8 @@ class OrderedSet(co.MutableSet, co.Sequence):
     OrderedSet also implements the collections.Sequence interface.
 
     """
+
+    # pylint: disable=too-many-ancestors
     def __init__(self, iterable=()):
         # pylint: disable=super-init-not-called
         self._keys = {}
@@ -221,10 +241,11 @@ class OrderedSet(co.MutableSet, co.Sequence):
 
     def index(self, value):
         "Return index of value."
+        # pylint: disable=arguments-differ
         try:
             return self._keys[value]
         except KeyError:
-            raise ValueError('%r is not in %s' % (value, type(self).__name__))
+            raise ValueError(f'{value!r} is not in {type(self).__name__}')
 
     def add(self, value):
         "Add element, value, to set."
@@ -241,7 +262,7 @@ class OrderedSet(co.MutableSet, co.Sequence):
 
     def __repr__(self):
         "Text representation of set."
-        return '%s(%r)' % (type(self).__name__, list(self))
+        return f'{type(self).__name__}({list(self)!r})'
 
     __str__ = __repr__
 
@@ -254,8 +275,10 @@ class SegmentList(SortedKeyList):
     implemented for SegmentList.
 
     """
+
+    # pylint: disable=too-many-ancestors
     def __init__(self, iterable=()):
-        super(SegmentList, self).__init__(iterable, self.zero)
+        super().__init__(iterable, self.zero)
 
     @staticmethod
     def zero(_):

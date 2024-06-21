@@ -1,3 +1,44 @@
+sortedcollections (2.1.0-2) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Use secure URI in Homepage field.
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository,
+    Repository-Browse.
+  * Update standards version to 4.6.1, no changes needed.
+
+ -- Jelmer Vernooĳ <jelmer@debian.org>  Fri, 28 Oct 2022 19:54:22 +0100
+
+sortedcollections (2.1.0-1) unstable; urgency=medium
+
+  [ Ondřej Nový ]
+  * Use 'python3 -m sphinx' instead of sphinx-build for building docs
+  * Use debhelper-compat instead of debian/compat.
+  * d/control: Update Maintainer field with new Debian Python Team
+    contact address.
+  * d/control: Update Vcs-* fields with new Debian Python Team Salsa
+    layout.
+
+  [ Debian Janitor ]
+  * Bump debhelper from old 11 to 12.
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository,
+    Repository-Browse.
+  * Apply multi-arch hints.
+    + python-sortedcollections-doc: Add Multi-Arch: foreign.
+
+  [ Diane Trout ]
+  * update d/watch as Upstream is only using github tags not release.
+  * New upstream release (Closes: #1001486)
+  * Update to debhelper-compat =13
+  * Update to Standards-Version 4.6.0, added Rules-Requires-Root: no
+  * Refresh patches
+  * add disable-github-badges.patch, to remove links to github CI images
+  * Change test dependencies to pytest.
+    (Upstream uses tox with some utilities not packaged in Debian)
+  * Delete .coverage directory installed by build process
+  * Implement real autopkgtests (Closes: #974473)
+
+ -- Diane Trout <diane@ghic.org>  Sun, 12 Dec 2021 12:15:25 -0800
+
 sortedcollections (1.0.1-1) unstable; urgency=medium
 
   * Team upload.

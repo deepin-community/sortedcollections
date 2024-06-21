@@ -14,12 +14,11 @@ traffic.
 
 --- a/docs/conf.py
 +++ b/docs/conf.py
-@@ -122,8 +122,6 @@
+@@ -87,7 +87,6 @@
      'logo': 'gj-logo.png',
      'logo_name': True,
      'logo_text_align': 'center',
--    'travis_button': True,
 -    'analytics_id': 'UA-19364636-2',
      'show_powered_by': False,
+     'show_related': True,
      'github_user': 'grantjenks',
-     'github_repo': 'sortedcollections',
